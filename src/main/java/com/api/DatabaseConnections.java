@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnections {
-     private static final String URL = "jdbc:mysql://localhost:3306/praktikumpbo";
+    private static final String URL = "jdbc:mysql://localhost:3306/db_stepup";
     private static final String USER = "root";
     private static final String PASSWORD = ""; // Gantisesuai password MySQL Anda
 
