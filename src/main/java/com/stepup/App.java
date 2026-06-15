@@ -1,17 +1,14 @@
 package com.stepup;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 import com.view.LoginView;
 
 /**
- * JavaFX App
+ * JavaFX App - StepUp Desktop Application.
+ * Terhubung ke API PHP WEBPRO-STEPUP untuk autentikasi dan data management.
  */
 public class App extends Application {
 
@@ -22,7 +19,7 @@ public class App extends Application {
 
         Scene scene = new Scene(loginView.getView(), 900, 600);
 
-        stage.setTitle("StepUp Admin");
+        stage.setTitle("StepUp Login");
         stage.setScene(scene);
         stage.show();
     }

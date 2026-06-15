@@ -8,8 +8,11 @@ public class User {
     private String role;
     private String fotoProfile;
     private String password;
+    private String status;
+    private int poin;
 
-    public User(int id, String nama, String email, String nim, String role, String fotoProfile, String password) {
+    // Constructor lengkap dengan status & poin
+    public User(int id, String nama, String email, String nim, String role, String fotoProfile, String password, String status, int poin) {
         this.id = id;
         this.nama = nama;
         this.email = email;
@@ -17,6 +20,18 @@ public class User {
         this.role = role;
         this.fotoProfile = fotoProfile;
         this.password = password;
+        this.status = status;
+        this.poin = poin;
+    }
+
+    // Constructor lengkap dengan status (poin default 0)
+    public User(int id, String nama, String email, String nim, String role, String fotoProfile, String password, String status) {
+        this(id, nama, email, nim, role, fotoProfile, password, status, 0);
+    }
+
+    // Constructor lama (backward compatibility)
+    public User(int id, String nama, String email, String nim, String role, String fotoProfile, String password) {
+        this(id, nama, email, nim, role, fotoProfile, password, "active", 0);
     }
 
     // Getters and Setters
@@ -74,5 +89,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getPoin() {
+        return poin;
+    }
+
+    public void setPoin(int poin) {
+        this.poin = poin;
     }
 }

@@ -1,39 +1,39 @@
-package com.dao;
+// package com.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+// import java.sql.Connection;
+// import java.sql.PreparedStatement;
+// import java.sql.ResultSet;
 
-import com.api.DatabaseConnections;
+// import com.api.DatabaseConnections;
 
-public class UserDAO {
+// public class UserDAO {
 
-    public boolean login(
-            String nama,
-            String email,
-            String password) {
+// public boolean login(
+// String nama,
+// String email,
+// String password) {
 
-        String sql = "SELECT * FROM users " +
-                "WHERE nama=? AND email=? AND password=?";
+// String sql = "SELECT * FROM users " +
+// "WHERE nama=? AND email=? AND password=?";
 
-        try {
+// try {
 
-            Connection conn = DatabaseConnections.getConnection();
+// Connection conn = DatabaseConnections.getConnection();
 
-            PreparedStatement ps = conn.prepareStatement(sql);
+// PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, nama);
-            ps.setString(2, email);
-            ps.setString(3, password);
+// ps.setString(1, nama);
+// ps.setString(2, email);
+// ps.setString(3, password);
 
-            ResultSet rs = ps.executeQuery();
+// ResultSet rs = ps.executeQuery();
 
-            return rs.next();
+// return rs.next();
 
-        } catch (Exception e) {
+// } catch (Exception e) {
 
-            e.printStackTrace();
-            return false;
-        }
-    }
-}
+// e.printStackTrace();
+// return false;
+// }
+// }
+// }

@@ -18,15 +18,16 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 /**
- * Admin Dashboard dengan sidebar navigation.
- * Menu: User Management, Reward Management, Logout.
+ * Dashboard untuk User biasa.
+ * Menu: Lihat Rewards, Logout.
+ * Tidak ada akses ke User Management.
  */
-public class DashboardView {
+public class UserDashboardView {
     private BorderPane root;
     private VBox contentArea;
     private Button activeButton;
 
-    public DashboardView() {
+    public UserDashboardView() {
 
         root = new BorderPane();
 
@@ -47,12 +48,12 @@ public class DashboardView {
         lblAppName.setFont(Font.font("Arial", FontWeight.BOLD, 22));
         lblAppName.setStyle("-fx-text-fill: #1a73e8;");
 
-        Label lblRole = new Label("Admin Panel");
+        Label lblRole = new Label("User Panel");
         lblRole.setStyle("-fx-text-fill: #888; -fx-font-size: 12px;");
 
         String currentName = SessionManager.getInstance().getCurrentUser() != null
                 ? SessionManager.getInstance().getCurrentUser().getNama()
-                : "Admin";
+                : "User";
         Label lblWelcome = new Label("Halo, " + currentName);
         lblWelcome.setStyle("-fx-text-fill: #ccc; -fx-font-size: 13px;");
 
@@ -65,8 +66,7 @@ public class DashboardView {
         VBox menuBox = new VBox(3);
         menuBox.setPadding(new Insets(10, 0, 0, 0));
 
-        Button btnUsers = createMenuButton("👥  User Management");
-        Button btnRewards = createMenuButton("🏆  Reward Management");
+        Button btnRewards = createMenuButton("🏆  Rewards");
 
         VBox spacer = new VBox();
         VBox.setVgrow(spacer, Priority.ALWAYS);
@@ -83,7 +83,7 @@ public class DashboardView {
                 "-fx-cursor: hand;" +
                 "-fx-border-color: transparent;");
 
-        menuBox.getChildren().addAll(btnUsers, btnRewards);
+        menuBox.getChildren().addAll(btnRewards);
 
         sidebar.getChildren().addAll(sidebarHeader, sep, menuBox, spacer, btnLogout);
 
@@ -103,7 +103,7 @@ public class DashboardView {
                 "-fx-border-color: #eee;" +
                 "-fx-border-width: 0 0 1 0;");
 
-        Label lblPageTitle = new Label("Dashboard Admin");
+        Label lblPageTitle = new Label("Dashboard");
         lblPageTitle.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         lblPageTitle.setStyle("-fx-text-fill: #333;");
 
@@ -116,17 +116,9 @@ public class DashboardView {
         // ========================
         // EVENT HANDLERS
         // ========================
-        btnUsers.setOnAction(e -> {
-            setActiveButton(btnUsers);
-            lblPageTitle.setText("User Management");
-            UserManagementView userView = new UserManagementView();
-            contentArea.getChildren().setAll(userView.getView());
-            VBox.setVgrow(userView.getView(), Priority.ALWAYS);
-        });
-
         btnRewards.setOnAction(e -> {
             setActiveButton(btnRewards);
-            lblPageTitle.setText("Reward Management");
+            lblPageTitle.setText("Rewards");
             RewardManagementView rewardView = new RewardManagementView();
             contentArea.getChildren().setAll(rewardView.getView());
             VBox.setVgrow(rewardView.getView(), Priority.ALWAYS);
@@ -141,8 +133,8 @@ public class DashboardView {
             stage.setScene(loginScene);
         });
 
-        // Default: buka User Management
-        btnUsers.fire();
+        // Default: buka Rewards
+        btnRewards.fire();
     }
 
     private Button createMenuButton(String text) {
@@ -184,7 +176,6 @@ public class DashboardView {
     }
 
     private void setActiveButton(Button btn) {
-        // Reset previous active
         if (activeButton != null) {
             activeButton.setStyle(
                     "-fx-background-color: transparent;" +
@@ -194,7 +185,6 @@ public class DashboardView {
                     "-fx-border-color: transparent;");
         }
 
-        // Set new active
         activeButton = btn;
         activeButton.setStyle(
                 "-fx-background-color: #1a73e8;" +

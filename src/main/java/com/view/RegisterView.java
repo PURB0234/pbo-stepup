@@ -1,8 +1,6 @@
 package com.view;
 
 import com.api.AuthService;
-import com.api.SessionManager;
-import com.models.User;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,22 +18,22 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class LoginView {
+public class RegisterView {
     private VBox root;
 
-    public LoginView() {
+    public RegisterView() {
 
         root = new VBox(15);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(40));
         root.setStyle("-fx-background-color: #f0f2f5;");
 
-        // Logo/Title
+        // Title
         Label title = new Label("STEPUP");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 32));
         title.setStyle("-fx-text-fill: #1a73e8;");
 
-        Label subtitle = new Label("Login ke akun Anda");
+        Label subtitle = new Label("Buat akun baru");
         subtitle.setStyle("-fx-text-fill: #666; -fx-font-size: 14px;");
 
         // Form Container
@@ -48,10 +46,30 @@ public class LoginView {
                 "-fx-background-radius: 10;" +
                 "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);");
 
+        TextField txtNama = new TextField();
+        txtNama.setPromptText("Nama Lengkap");
+        txtNama.setMaxWidth(280);
+        txtNama.setStyle(
+                "-fx-padding: 10;" +
+                "-fx-font-size: 14px;" +
+                "-fx-background-radius: 5;" +
+                "-fx-border-radius: 5;" +
+                "-fx-border-color: #ddd;");
+
         TextField txtEmail = new TextField();
         txtEmail.setPromptText("Email");
         txtEmail.setMaxWidth(280);
         txtEmail.setStyle(
+                "-fx-padding: 10;" +
+                "-fx-font-size: 14px;" +
+                "-fx-background-radius: 5;" +
+                "-fx-border-radius: 5;" +
+                "-fx-border-color: #ddd;");
+
+        TextField txtNim = new TextField();
+        txtNim.setPromptText("NIM");
+        txtNim.setMaxWidth(280);
+        txtNim.setStyle(
                 "-fx-padding: 10;" +
                 "-fx-font-size: 14px;" +
                 "-fx-background-radius: 5;" +
@@ -68,97 +86,95 @@ public class LoginView {
                 "-fx-border-radius: 5;" +
                 "-fx-border-color: #ddd;");
 
-        Button btnLogin = new Button("LOGIN");
-        btnLogin.setPrefWidth(280);
-        btnLogin.setPrefHeight(40);
-        btnLogin.setStyle(
-                "-fx-background-color: #1a73e8;" +
+        Button btnRegister = new Button("DAFTAR");
+        btnRegister.setPrefWidth(280);
+        btnRegister.setPrefHeight(40);
+        btnRegister.setStyle(
+                "-fx-background-color: #34a853;" +
                 "-fx-text-fill: white;" +
                 "-fx-font-size: 14px;" +
                 "-fx-font-weight: bold;" +
                 "-fx-background-radius: 5;" +
                 "-fx-cursor: hand;");
 
-        // Label status untuk menampilkan loading/error
         Label lblStatus = new Label();
         lblStatus.setStyle("-fx-text-fill: red; -fx-font-size: 12px;");
 
-        btnLogin.setOnAction(e -> {
+        btnRegister.setOnAction(e -> {
 
+            String nama = txtNama.getText().trim();
             String email = txtEmail.getText().trim();
+            String nim = txtNim.getText().trim();
             String password = txtPassword.getText().trim();
 
-            if (email.isEmpty() || password.isEmpty()) {
+            if (nama.isEmpty() || email.isEmpty()
+                    || nim.isEmpty() || password.isEmpty()) {
+
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setHeaderText(null);
-                alert.setContentText("Email dan Password wajib diisi!");
+                alert.setContentText("Semua field wajib diisi!");
                 alert.showAndWait();
                 return;
             }
 
-            lblStatus.setText("Sedang login...");
+            lblStatus.setText("Mendaftarkan akun...");
             lblStatus.setStyle("-fx-text-fill: #666; -fx-font-size: 12px;");
 
-            // Panggil API login
-            User user = AuthService.login(email, password);
+            boolean success = AuthService.register(nama, email, password, nim);
 
-            if (user != null) {
-                // Simpan session
-                SessionManager.getInstance().setCurrentUser(user);
+            if (success) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setContentText("Registrasi berhasil! Silakan login.");
+                alert.showAndWait();
 
+                // Navigate ke LoginView
+                LoginView loginView = new LoginView();
                 Stage stage = (Stage) root.getScene().getWindow();
-
-                // Cek role → Admin atau User Dashboard
-                if ("admin".equalsIgnoreCase(user.getRole())) {
-                    DashboardView dashboard = new DashboardView();
-                    Scene dashboardScene = new Scene(dashboard.getView(), 1100, 700);
-                    stage.setTitle("StepUp Admin Dashboard");
-                    stage.setScene(dashboardScene);
-                } else {
-                    UserDashboardView userDashboard = new UserDashboardView();
-                    Scene userScene = new Scene(userDashboard.getView(), 1100, 700);
-                    stage.setTitle("StepUp Dashboard");
-                    stage.setScene(userScene);
-                }
+                Scene loginScene = new Scene(loginView.getView(), 900, 600);
+                stage.setTitle("StepUp Login");
+                stage.setScene(loginScene);
 
             } else {
-                String errorMsg = AuthService.getLoginError(email, password);
-                lblStatus.setText(errorMsg);
+                String msg = AuthService.getRegisterMessage(nama, email, password, nim);
+                lblStatus.setText(msg);
                 lblStatus.setStyle("-fx-text-fill: red; -fx-font-size: 12px;");
             }
         });
 
         formBox.getChildren().addAll(
+                txtNama,
                 txtEmail,
+                txtNim,
                 txtPassword,
-                btnLogin,
+                btnRegister,
                 lblStatus);
 
-        // Register link
-        HBox registerBox = new HBox(5);
-        registerBox.setAlignment(Pos.CENTER);
+        // Login link
+        HBox loginBox = new HBox(5);
+        loginBox.setAlignment(Pos.CENTER);
 
-        Label lblNoAccount = new Label("Belum punya akun?");
-        lblNoAccount.setStyle("-fx-text-fill: #666;");
+        Label lblHaveAccount = new Label("Sudah punya akun?");
+        lblHaveAccount.setStyle("-fx-text-fill: #666;");
 
-        Hyperlink linkRegister = new Hyperlink("Daftar di sini");
-        linkRegister.setStyle("-fx-text-fill: #1a73e8; -fx-font-weight: bold;");
+        Hyperlink linkLogin = new Hyperlink("Login di sini");
+        linkLogin.setStyle("-fx-text-fill: #1a73e8; -fx-font-weight: bold;");
 
-        linkRegister.setOnAction(e -> {
-            RegisterView registerView = new RegisterView();
+        linkLogin.setOnAction(e -> {
+            LoginView loginView = new LoginView();
             Stage stage = (Stage) root.getScene().getWindow();
-            Scene registerScene = new Scene(registerView.getView(), 900, 600);
-            stage.setTitle("StepUp Register");
-            stage.setScene(registerScene);
+            Scene loginScene = new Scene(loginView.getView(), 900, 600);
+            stage.setTitle("StepUp Login");
+            stage.setScene(loginScene);
         });
 
-        registerBox.getChildren().addAll(lblNoAccount, linkRegister);
+        loginBox.getChildren().addAll(lblHaveAccount, linkLogin);
 
         root.getChildren().addAll(
                 title,
                 subtitle,
                 formBox,
-                registerBox);
+                loginBox);
     }
 
     public Parent getView() {
