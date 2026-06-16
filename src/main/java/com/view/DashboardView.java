@@ -17,10 +17,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-/**
- * Admin Dashboard dengan sidebar navigation.
- * Menu: User Management, Reward Management, Logout.
- */
 public class DashboardView {
     private BorderPane root;
     private VBox contentArea;
@@ -78,10 +74,10 @@ public class DashboardView {
         btnLogout.setPadding(new Insets(0, 0, 0, 15));
         btnLogout.setStyle(
                 "-fx-background-color: transparent;" +
-                "-fx-text-fill: #ea4335;" +
-                "-fx-font-size: 14px;" +
-                "-fx-cursor: hand;" +
-                "-fx-border-color: transparent;");
+                        "-fx-text-fill: #ea4335;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-border-color: transparent;");
 
         menuBox.getChildren().addAll(btnUsers, btnRewards);
 
@@ -153,19 +149,19 @@ public class DashboardView {
         btn.setPadding(new Insets(0, 0, 0, 15));
         btn.setStyle(
                 "-fx-background-color: transparent;" +
-                "-fx-text-fill: #bbb;" +
-                "-fx-font-size: 14px;" +
-                "-fx-cursor: hand;" +
-                "-fx-border-color: transparent;");
+                        "-fx-text-fill: #bbb;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-border-color: transparent;");
 
         btn.setOnMouseEntered(e -> {
             if (btn != activeButton) {
                 btn.setStyle(
                         "-fx-background-color: #16213e;" +
-                        "-fx-text-fill: white;" +
-                        "-fx-font-size: 14px;" +
-                        "-fx-cursor: hand;" +
-                        "-fx-border-color: transparent;");
+                                "-fx-text-fill: white;" +
+                                "-fx-font-size: 14px;" +
+                                "-fx-cursor: hand;" +
+                                "-fx-border-color: transparent;");
             }
         });
 
@@ -173,10 +169,10 @@ public class DashboardView {
             if (btn != activeButton) {
                 btn.setStyle(
                         "-fx-background-color: transparent;" +
-                        "-fx-text-fill: #bbb;" +
-                        "-fx-font-size: 14px;" +
-                        "-fx-cursor: hand;" +
-                        "-fx-border-color: transparent;");
+                                "-fx-text-fill: #bbb;" +
+                                "-fx-font-size: 14px;" +
+                                "-fx-cursor: hand;" +
+                                "-fx-border-color: transparent;");
             }
         });
 
@@ -188,22 +184,22 @@ public class DashboardView {
         if (activeButton != null) {
             activeButton.setStyle(
                     "-fx-background-color: transparent;" +
-                    "-fx-text-fill: #bbb;" +
-                    "-fx-font-size: 14px;" +
-                    "-fx-cursor: hand;" +
-                    "-fx-border-color: transparent;");
+                            "-fx-text-fill: #bbb;" +
+                            "-fx-font-size: 14px;" +
+                            "-fx-cursor: hand;" +
+                            "-fx-border-color: transparent;");
         }
 
         // Set new active
         activeButton = btn;
         activeButton.setStyle(
                 "-fx-background-color: #1a73e8;" +
-                "-fx-text-fill: white;" +
-                "-fx-font-size: 14px;" +
-                "-fx-font-weight: bold;" +
-                "-fx-cursor: hand;" +
-                "-fx-border-color: transparent;" +
-                "-fx-background-radius: 0;");
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-border-color: transparent;" +
+                        "-fx-background-radius: 0;");
     }
 
     public Parent getView() {

@@ -63,7 +63,8 @@ public class RewardManagementView {
         lblPoinBalance = new Label();
         updatePoinDisplay();
         lblPoinBalance.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        lblPoinBalance.setStyle("-fx-background-color: #e8f0fe; -fx-text-fill: #1a73e8; -fx-padding: 6 12; -fx-background-radius: 15;");
+        lblPoinBalance.setStyle(
+                "-fx-background-color: #e8f0fe; -fx-text-fill: #1a73e8; -fx-padding: 6 12; -fx-background-radius: 15;");
 
         HBox spacer = new HBox();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -71,11 +72,11 @@ public class RewardManagementView {
         Button btnRefresh = new Button("🔄 Refresh");
         btnRefresh.setStyle(
                 "-fx-background-color: #1a73e8;" +
-                "-fx-text-fill: white;" +
-                "-fx-font-size: 13px;" +
-                "-fx-padding: 8 16;" +
-                "-fx-background-radius: 5;" +
-                "-fx-cursor: hand;");
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 13px;" +
+                        "-fx-padding: 8 16;" +
+                        "-fx-background-radius: 5;" +
+                        "-fx-cursor: hand;");
         btnRefresh.setOnAction(e -> loadData());
 
         header.getChildren().addAll(title, lblPoinBalance, spacer, btnRefresh);
@@ -84,11 +85,11 @@ public class RewardManagementView {
             Button btnHistory = new Button("📋 Riwayat Redeem");
             btnHistory.setStyle(
                     "-fx-background-color: #1a1a2e;" +
-                    "-fx-text-fill: white;" +
-                    "-fx-font-size: 13px;" +
-                    "-fx-padding: 8 16;" +
-                    "-fx-background-radius: 5;" +
-                    "-fx-cursor: hand;");
+                            "-fx-text-fill: white;" +
+                            "-fx-font-size: 13px;" +
+                            "-fx-padding: 8 16;" +
+                            "-fx-background-radius: 5;" +
+                            "-fx-cursor: hand;");
             btnHistory.setOnAction(e -> showHistoryDialog());
             header.getChildren().add(header.getChildren().size() - 1, btnHistory);
         }
@@ -98,11 +99,11 @@ public class RewardManagementView {
             Button btnTambah = new Button("+ Tambah Reward");
             btnTambah.setStyle(
                     "-fx-background-color: #34a853;" +
-                    "-fx-text-fill: white;" +
-                    "-fx-font-size: 13px;" +
-                    "-fx-padding: 8 16;" +
-                    "-fx-background-radius: 5;" +
-                    "-fx-cursor: hand;");
+                            "-fx-text-fill: white;" +
+                            "-fx-font-size: 13px;" +
+                            "-fx-padding: 8 16;" +
+                            "-fx-background-radius: 5;" +
+                            "-fx-cursor: hand;");
             btnTambah.setOnAction(e -> showAddDialog());
 
             header.getChildren().add(header.getChildren().size() - 1, btnTambah);
@@ -112,8 +113,8 @@ public class RewardManagementView {
         tableView = new TableView<>();
         tableView.setStyle(
                 "-fx-background-color: white;" +
-                "-fx-border-color: #ddd;" +
-                "-fx-border-radius: 5;");
+                        "-fx-border-color: #ddd;" +
+                        "-fx-border-radius: 5;");
         VBox.setVgrow(tableView, Priority.ALWAYS);
 
         // Kolom ID
@@ -172,36 +173,52 @@ public class RewardManagementView {
 
         tableView.getColumns().addAll(colId, colNama, colDesc, colPoin, colStok);
 
-        // Kolom Aksi (Admin: Hapus, User: Redeem)
+        // Kolom Aksi (Admin: Edit+Hapus, User: Redeem)
         TableColumn<Reward, Void> colAksi = new TableColumn<>("Aksi");
-        colAksi.setPrefWidth(120);
+        colAksi.setPrefWidth(180);
         colAksi.setCellFactory(col -> new TableCell<Reward, Void>() {
-            private final Button btnAction = new Button();
+            private final HBox adminBox = new HBox(5);
+            private final Button btnEdit = new Button("Edit");
+            private final Button btnHapus = new Button("Hapus");
+            private final Button btnRedeem = new Button("Redeem");
 
             {
                 if (isAdmin) {
-                    btnAction.setText("Hapus");
-                    btnAction.setStyle(
+                    btnEdit.setStyle(
+                            "-fx-background-color: #ea8c35;" +
+                                    "-fx-text-fill: white;" +
+                                    "-fx-font-size: 11px;" +
+                                    "-fx-padding: 4 12;" +
+                                    "-fx-background-radius: 3;" +
+                                    "-fx-cursor: hand;");
+                    btnEdit.setOnAction(e -> {
+                        Reward reward = getTableView().getItems().get(getIndex());
+                        handleEdit(reward);
+                    });
+
+                    btnHapus.setStyle(
                             "-fx-background-color: #ea4335;" +
-                            "-fx-text-fill: white;" +
-                            "-fx-font-size: 11px;" +
-                            "-fx-padding: 4 12;" +
-                            "-fx-background-radius: 3;" +
-                            "-fx-cursor: hand;");
-                    btnAction.setOnAction(e -> {
+                                    "-fx-text-fill: white;" +
+                                    "-fx-font-size: 11px;" +
+                                    "-fx-padding: 4 12;" +
+                                    "-fx-background-radius: 3;" +
+                                    "-fx-cursor: hand;");
+                    btnHapus.setOnAction(e -> {
                         Reward reward = getTableView().getItems().get(getIndex());
                         handleDelete(reward);
                     });
+
+                    adminBox.setAlignment(Pos.CENTER);
+                    adminBox.getChildren().addAll(btnEdit, btnHapus);
                 } else {
-                    btnAction.setText("Redeem");
-                    btnAction.setStyle(
+                    btnRedeem.setStyle(
                             "-fx-background-color: #1a73e8;" +
-                            "-fx-text-fill: white;" +
-                            "-fx-font-size: 11px;" +
-                            "-fx-padding: 4 12;" +
-                            "-fx-background-radius: 3;" +
-                            "-fx-cursor: hand;");
-                    btnAction.setOnAction(e -> {
+                                    "-fx-text-fill: white;" +
+                                    "-fx-font-size: 11px;" +
+                                    "-fx-padding: 4 12;" +
+                                    "-fx-background-radius: 3;" +
+                                    "-fx-cursor: hand;");
+                    btnRedeem.setOnAction(e -> {
                         Reward reward = getTableView().getItems().get(getIndex());
                         handleRedeem(reward);
                     });
@@ -214,42 +231,44 @@ public class RewardManagementView {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    if (!isAdmin) {
+                    if (isAdmin) {
+                        setGraphic(adminBox);
+                    } else {
                         Reward reward = getTableView().getItems().get(getIndex());
-                        int userPoin = SessionManager.getInstance().getCurrentUser() != null 
-                                ? SessionManager.getInstance().getCurrentUser().getPoin() 
+                        int userPoin = SessionManager.getInstance().getCurrentUser() != null
+                                ? SessionManager.getInstance().getCurrentUser().getPoin()
                                 : 0;
                         if (reward.getStok() <= 0) {
-                            btnAction.setDisable(true);
-                            btnAction.setText("Habis");
-                            btnAction.setStyle(
+                            btnRedeem.setDisable(true);
+                            btnRedeem.setText("Habis");
+                            btnRedeem.setStyle(
                                     "-fx-background-color: #cbd5e1;" +
-                                    "-fx-text-fill: #94a3b8;" +
-                                    "-fx-font-size: 11px;" +
-                                    "-fx-padding: 4 12;" +
-                                    "-fx-background-radius: 3;");
+                                            "-fx-text-fill: #94a3b8;" +
+                                            "-fx-font-size: 11px;" +
+                                            "-fx-padding: 4 12;" +
+                                            "-fx-background-radius: 3;");
                         } else if (userPoin < reward.getPoin()) {
-                            btnAction.setDisable(true);
-                            btnAction.setText("Poin Kurang");
-                            btnAction.setStyle(
+                            btnRedeem.setDisable(true);
+                            btnRedeem.setText("Poin Kurang");
+                            btnRedeem.setStyle(
                                     "-fx-background-color: #cbd5e1;" +
-                                    "-fx-text-fill: #94a3b8;" +
-                                    "-fx-font-size: 11px;" +
-                                    "-fx-padding: 4 12;" +
-                                    "-fx-background-radius: 3;");
+                                            "-fx-text-fill: #94a3b8;" +
+                                            "-fx-font-size: 11px;" +
+                                            "-fx-padding: 4 12;" +
+                                            "-fx-background-radius: 3;");
                         } else {
-                            btnAction.setDisable(false);
-                            btnAction.setText("Redeem");
-                            btnAction.setStyle(
+                            btnRedeem.setDisable(false);
+                            btnRedeem.setText("Redeem");
+                            btnRedeem.setStyle(
                                     "-fx-background-color: #1a73e8;" +
-                                    "-fx-text-fill: white;" +
-                                    "-fx-font-size: 11px;" +
-                                    "-fx-padding: 4 12;" +
-                                    "-fx-background-radius: 3;" +
-                                    "-fx-cursor: hand;");
+                                            "-fx-text-fill: white;" +
+                                            "-fx-font-size: 11px;" +
+                                            "-fx-padding: 4 12;" +
+                                            "-fx-background-radius: 3;" +
+                                            "-fx-cursor: hand;");
                         }
+                        setGraphic(btnRedeem);
                     }
-                    setGraphic(btnAction);
                 }
             }
         });
@@ -372,6 +391,70 @@ public class RewardManagementView {
         }
     }
 
+    private void handleEdit(Reward reward) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Edit Reward");
+        dialog.setHeaderText("Edit reward: " + reward.getNameReward());
+
+        VBox content = new VBox(10);
+        content.setPadding(new Insets(15));
+
+        Label lblNama = new Label("Nama Reward:");
+        TextField txtNama = new TextField(reward.getNameReward());
+        txtNama.setPrefWidth(300);
+
+        Label lblDesc = new Label("Deskripsi:");
+        TextArea txtDesc = new TextArea(reward.getDescription());
+        txtDesc.setPrefWidth(300);
+        txtDesc.setPrefHeight(80);
+
+        Label lblPoin = new Label("Poin:");
+        Spinner<Integer> spPoin = new Spinner<>();
+        spPoin.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99999, reward.getPoin(), 50));
+        spPoin.setPrefWidth(150);
+        spPoin.setEditable(true);
+
+        Label lblStok = new Label("Stok:");
+        Spinner<Integer> spStok = new Spinner<>();
+        spStok.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 9999, reward.getStok(), 1));
+        spStok.setPrefWidth(150);
+        spStok.setEditable(true);
+
+        content.getChildren().addAll(
+                lblNama, txtNama,
+                lblDesc, txtDesc,
+                lblPoin, spPoin,
+                lblStok, spStok);
+
+        dialog.getDialogPane().setContent(content);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String nama = txtNama.getText().trim();
+            String desc = txtDesc.getText().trim();
+            int poin = spPoin.getValue();
+            int stok = spStok.getValue();
+
+            if (nama.isEmpty() || desc.isEmpty()) {
+                showAlert(Alert.AlertType.WARNING, "Nama dan deskripsi wajib diisi!");
+                return;
+            }
+
+            boolean success = RewardService.updateReward(reward.getIdReward(), nama, poin, desc, stok);
+
+            if (success) {
+                showAlert(Alert.AlertType.INFORMATION, "Reward berhasil diupdate!");
+                loadData();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Gagal mengupdate reward.");
+            }
+        }
+    }
+
     private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);
         alert.setHeaderText(null);
@@ -389,8 +472,8 @@ public class RewardManagementView {
     }
 
     private void handleRedeem(Reward reward) {
-        int userId = SessionManager.getInstance().getCurrentUser() != null 
-                ? SessionManager.getInstance().getCurrentUser().getId() 
+        int userId = SessionManager.getInstance().getCurrentUser() != null
+                ? SessionManager.getInstance().getCurrentUser().getId()
                 : 0;
 
         if (userId <= 0) {
@@ -401,7 +484,8 @@ public class RewardManagementView {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Konfirmasi Redeem");
         confirm.setHeaderText(null);
-        confirm.setContentText("Apakah Anda yakin ingin menukarkan " + reward.getPoin() + " poin untuk \"" + reward.getNameReward() + "\"?");
+        confirm.setContentText("Apakah Anda yakin ingin menukarkan " + reward.getPoin() + " poin untuk \""
+                + reward.getNameReward() + "\"?");
 
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -419,15 +503,16 @@ public class RewardManagementView {
                 // Refresh table
                 loadData();
             } else {
-                String errorMsg = response.has("message") ? response.get("message").getAsString() : "Gagal melakukan redeem.";
+                String errorMsg = response.has("message") ? response.get("message").getAsString()
+                        : "Gagal melakukan redeem.";
                 showAlert(Alert.AlertType.ERROR, errorMsg);
             }
         }
     }
 
     private void showHistoryDialog() {
-        int userId = SessionManager.getInstance().getCurrentUser() != null 
-                ? SessionManager.getInstance().getCurrentUser().getId() 
+        int userId = SessionManager.getInstance().getCurrentUser() != null
+                ? SessionManager.getInstance().getCurrentUser().getId()
                 : 0;
 
         if (userId <= 0) {
@@ -483,8 +568,7 @@ public class RewardManagementView {
                 historyData.add(new RedemptionRecord(
                         obj.get("nama_reward").getAsString(),
                         obj.get("poin_digunakan").getAsInt(),
-                        obj.get("tanggal_redeem").getAsString()
-                ));
+                        obj.get("tanggal_redeem").getAsString()));
             }
         }
 
@@ -514,9 +598,17 @@ public class RewardManagementView {
             this.tanggalRedeem = tanggalRedeem;
         }
 
-        public String getRewardName() { return rewardName; }
-        public int getPoinDigunakan() { return poinDigunakan; }
-        public String getTanggalRedeem() { return tanggalRedeem; }
+        public String getRewardName() {
+            return rewardName;
+        }
+
+        public int getPoinDigunakan() {
+            return poinDigunakan;
+        }
+
+        public String getTanggalRedeem() {
+            return tanggalRedeem;
+        }
     }
 
     public Parent getView() {

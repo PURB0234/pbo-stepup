@@ -17,6 +17,7 @@ public class RewardService {
 
     /**
      * Mengambil semua data reward dari API.
+     * 
      * @return List reward
      */
     public static List<Reward> getAllRewards() {
@@ -37,12 +38,15 @@ public class RewardService {
                             obj.get("id_reward").getAsInt(),
                             obj.get("name_reward").getAsString(),
                             obj.has("description") && !obj.get("description").isJsonNull()
-                                    ? obj.get("description").getAsString() : "",
+                                    ? obj.get("description").getAsString()
+                                    : "",
                             obj.get("poin").getAsInt(),
                             obj.has("gambar") && !obj.get("gambar").isJsonNull()
-                                    ? obj.get("gambar").getAsString() : "",
+                                    ? obj.get("gambar").getAsString()
+                                    : "",
                             obj.has("stok") && !obj.get("stok").isJsonNull()
-                                    ? obj.get("stok").getAsInt() : 0);
+                                    ? obj.get("stok").getAsInt()
+                                    : 0);
 
                     rewards.add(reward);
                 }
@@ -57,6 +61,7 @@ public class RewardService {
 
     /**
      * Tambah reward baru dengan stok default 0.
+     * 
      * @return true jika berhasil
      */
     public static boolean addReward(String nameReward, int poin, String description) {
@@ -65,6 +70,7 @@ public class RewardService {
 
     /**
      * Tambah reward baru dengan stok.
+     * 
      * @return true jika berhasil
      */
     public static boolean addReward(String nameReward, int poin, String description, int stok) {
@@ -87,6 +93,7 @@ public class RewardService {
 
     /**
      * Hapus reward berdasarkan ID.
+     * 
      * @return true jika berhasil
      */
     public static boolean deleteReward(int id) {
@@ -105,7 +112,32 @@ public class RewardService {
     }
 
     /**
+     * Update reward berdasarkan ID dengan data baru.
+     * 
+     * @return true jika berhasil
+     */
+    public static boolean updateReward(int id, String nameReward, int poin, String description, int stok) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("id_reward", String.valueOf(id));
+        params.put("name_reward", nameReward);
+        params.put("poin", String.valueOf(poin));
+        params.put("description", description);
+        params.put("stok", String.valueOf(stok));
+
+        String response = ApiClient.sendPost("rewards_update.php", params);
+
+        try {
+            JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+            return json.get("success").getAsBoolean();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * Melakukan redeem reward untuk user.
+     * 
      * @return JsonObject response dari API
      */
     public static JsonObject redeemReward(int userId, int rewardId) {
@@ -128,6 +160,7 @@ public class RewardService {
 
     /**
      * Mengambil riwayat redeem untuk user.
+     * 
      * @return JsonObject response dari API
      */
     public static JsonObject getRedemptionHistory(int userId) {
