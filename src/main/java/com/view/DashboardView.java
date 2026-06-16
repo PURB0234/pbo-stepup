@@ -63,6 +63,7 @@ public class DashboardView {
 
         Button btnUsers = createMenuButton("👥  User Management");
         Button btnRewards = createMenuButton("🏆  Reward Management");
+        Button btnFeed = createMenuButton("📢  Community Feed");
 
         VBox spacer = new VBox();
         VBox.setVgrow(spacer, Priority.ALWAYS);
@@ -79,7 +80,7 @@ public class DashboardView {
                         "-fx-cursor: hand;" +
                         "-fx-border-color: transparent;");
 
-        menuBox.getChildren().addAll(btnUsers, btnRewards);
+        menuBox.getChildren().addAll(btnUsers, btnRewards, btnFeed);
 
         sidebar.getChildren().addAll(sidebarHeader, sep, menuBox, spacer, btnLogout);
 
@@ -126,6 +127,14 @@ public class DashboardView {
             RewardManagementView rewardView = new RewardManagementView();
             contentArea.getChildren().setAll(rewardView.getView());
             VBox.setVgrow(rewardView.getView(), Priority.ALWAYS);
+        });
+
+        btnFeed.setOnAction(e -> {
+            setActiveButton(btnFeed);
+            lblPageTitle.setText("Community Feed");
+            CommunityFeedView feedView = new CommunityFeedView();
+            contentArea.getChildren().setAll(feedView.getView());
+            VBox.setVgrow(feedView.getView(), Priority.ALWAYS);
         });
 
         btnLogout.setOnAction(e -> {

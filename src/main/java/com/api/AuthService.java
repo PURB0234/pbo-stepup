@@ -1,11 +1,11 @@
 package com.api;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.models.User;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Service untuk autentikasi (login & register) via API PHP.

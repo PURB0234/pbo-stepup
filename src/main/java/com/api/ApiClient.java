@@ -15,7 +15,7 @@ import java.util.StringJoiner;
  */
 public class ApiClient {
 
-    private static final String BASE_URL = "http://localhost/WEBPRO_STEPUP/WEBPRO-STEPUP/api/javafx/";
+    private static final String BASE_URL = "http://localhost/webpro-stepup/api/javafx/";
     private static final HttpClient client = HttpClient.newHttpClient();
 
     /**
