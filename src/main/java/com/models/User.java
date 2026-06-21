@@ -4,7 +4,7 @@ public class User {
     private int id;
     private String nama;
     private String email;
-    private String nim;
+    // private String nim;
     private String role;
     private String fotoProfile;
     private String password;
@@ -12,11 +12,12 @@ public class User {
     private int poin;
 
     // Constructor lengkap dengan status & poin
-    public User(int id, String nama, String email, String nim, String role, String fotoProfile, String password, String status, int poin) {
+    public User(int id, String nama, String email, String role, String fotoProfile, String password, String status,
+            int poin) {
         this.id = id;
         this.nama = nama;
         this.email = email;
-        this.nim = nim;
+        // this.nim = nim;
         this.role = role;
         this.fotoProfile = fotoProfile;
         this.password = password;
@@ -25,13 +26,13 @@ public class User {
     }
 
     // Constructor lengkap dengan status (poin default 0)
-    public User(int id, String nama, String email, String nim, String role, String fotoProfile, String password, String status) {
-        this(id, nama, email, nim, role, fotoProfile, password, status, 0);
+    public User(int id, String nama, String email, String role, String fotoProfile, String password, String status) {
+        this(id, nama, email, role, fotoProfile, password, status, 0);
     }
 
     // Constructor lama (backward compatibility)
-    public User(int id, String nama, String email, String nim, String role, String fotoProfile, String password) {
-        this(id, nama, email, nim, role, fotoProfile, password, "active", 0);
+    public User(int id, String nama, String email, String role, String fotoProfile, String password) {
+        this(id, nama, email, role, fotoProfile, password, "active", 0);
     }
 
     // Getters and Setters
@@ -59,13 +60,13 @@ public class User {
         this.email = email;
     }
 
-    public String getNim() {
-        return nim;
-    }
+    // public String getNim() {
+    // return nim;
+    // }
 
-    public void setNim(String nim) {
-        this.nim = nim;
-    }
+    // public void setNim(String nim) {
+    // this.nim = nim;
+    // }
 
     public String getRole() {
         return role;

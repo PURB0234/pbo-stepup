@@ -17,6 +17,7 @@ public class UserService {
 
     /**
      * Mengambil semua data user dari API.
+     * 
      * @return List user
      */
     public static List<User> getAllUsers() {
@@ -37,16 +38,17 @@ public class UserService {
                             obj.get("id").getAsInt(),
                             obj.get("nama").getAsString(),
                             obj.get("email").getAsString(),
-                            obj.has("nim") && !obj.get("nim").isJsonNull()
-                                    ? obj.get("nim").getAsString() : "",
                             obj.get("role").getAsString(),
                             obj.has("foto_profile") && !obj.get("foto_profile").isJsonNull()
-                                    ? obj.get("foto_profile").getAsString() : "",
+                                    ? obj.get("foto_profile").getAsString()
+                                    : "",
                             "",
                             obj.has("status") && !obj.get("status").isJsonNull()
-                                    ? obj.get("status").getAsString() : "active",
+                                    ? obj.get("status").getAsString()
+                                    : "active",
                             obj.has("poin") && !obj.get("poin").isJsonNull()
-                                    ? obj.get("poin").getAsInt() : 0);
+                                    ? obj.get("poin").getAsInt()
+                                    : 0);
 
                     users.add(user);
                 }
@@ -61,6 +63,7 @@ public class UserService {
 
     /**
      * Update role dan status user.
+     * 
      * @return true jika berhasil
      */
     public static boolean updateUser(int id, String role, String status) {
@@ -82,6 +85,7 @@ public class UserService {
 
     /**
      * Hapus user berdasarkan ID.
+     * 
      * @return true jika berhasil
      */
     public static boolean deleteUser(int id) {
